@@ -3,7 +3,7 @@
 A hobby project to demonstrate the implementation of Clean Architecture using Bloc in Flutter. This repository is designed to serve as a starting point for Flutter developers who want to implement Clean Architecture principles in their applications.
 
 ## Screenshots
-![Capture](![Domain Driven Design](https://i.imgur.com/SBj3rsF.jpeg))
+![Capture](https://i.imgur.com/adjwxbt.png)
 
 ## Table of Contents
 - [Introduction](#introduction)
