@@ -50,6 +50,8 @@ dependencies:
   image:
   geocoding:
   event_bus:
+  bloc_test:
+  mockito:
 
 flutter_gen:
   output: lib/gen/

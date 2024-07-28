@@ -5,8 +5,8 @@ class WeatherMainModel {
   final num tempMax;
   final num pressure;
   final num humidity;
-  final num seaLevel;
-  final num grndLevel;
+  final num? seaLevel;
+  final num? grndLevel;
 
   WeatherMainModel({
     required this.temp,
@@ -15,8 +15,8 @@ class WeatherMainModel {
     required this.tempMax,
     required this.pressure,
     required this.humidity,
-    required this.seaLevel,
-    required this.grndLevel,
+    this.seaLevel,
+    this.grndLevel,
   });
 
   factory WeatherMainModel.fromJson(Map<String, dynamic> json) {

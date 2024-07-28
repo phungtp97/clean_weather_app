@@ -89,14 +89,14 @@ extension GetItInjectableX on _i1.GetIt {
       environmentFilter,
     );
     final injectableModule = _$InjectableModule();
+    gh.singleton<_i3.Dio>(
+      () => injectableModule.publicDio,
+      instanceName: 'PUBLIC_API',
+    );
     await gh.singletonAsync<_i3.Dio>(
       () => injectableModule.authenticatedDio,
       instanceName: 'AUTHENTICATED_API',
       preResolve: true,
-    );
-    gh.singleton<_i3.Dio>(
-      () => injectableModule.publicDio,
-      instanceName: 'PUBLIC_API',
     );
     gh.singleton<_i4.EventBus>(() => injectableModule.eventBus);
     gh.singleton<_i5.InternetConnection>(
