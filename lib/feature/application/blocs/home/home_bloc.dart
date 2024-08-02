@@ -16,13 +16,9 @@ class HomeBloc extends BaseBloc<HomeState> {
 
   final RemoveLocationUseCase removeLocationUseCase;
 
-  final GetWeatherFiveDaysForecastByCoordUseCase
-      getWeatherFiveDaysForecastByCoordUseCase;
-
   HomeBloc(
       {required this.getWeatherByCoordUseCase,
       required this.getLocationUseCase,
-      required this.getWeatherFiveDaysForecastByCoordUseCase,
       required this.removeLocationUseCase,
       required this.getWeatherForecastByCoordUseCase})
       : super(const HomeState()) {

@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'model.dart';
 
-class CurrentWeatherModel {
+class CurrentWeatherModel extends Equatable {
   final CoordinateModel? coordinate;
   final List<WeatherModel> weather;
   final String? base;
@@ -18,7 +20,7 @@ class CurrentWeatherModel {
 
   final num? pop;
 
-  CurrentWeatherModel({
+  const CurrentWeatherModel({
     this.coordinate,
     this.base,
     this.wind,
@@ -60,4 +62,23 @@ class CurrentWeatherModel {
       cod: json['cod'],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        coordinate,
+        base,
+        wind,
+        rain,
+        cloud,
+        sys,
+        pop,
+        weather,
+        main,
+        visibility,
+        dt,
+        timezone,
+        id,
+        name,
+        cod,
+      ];
 }

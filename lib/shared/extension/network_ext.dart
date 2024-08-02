@@ -63,6 +63,7 @@ extension ResponseFutureExt<T> on Future<Response<T>> {
         return Left(ServerUnknownFailure(dioError));
       }
     } catch (e) {
+      print('exception - $e - ${e}');
       return Left(NetworkUnknownError(e));
     }
   }

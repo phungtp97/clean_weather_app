@@ -1,4 +1,6 @@
-class WeatherMainModel {
+import 'package:equatable/equatable.dart';
+
+class WeatherMainModel extends Equatable {
   final num temp;
   final num feelsLike;
   final num tempMin;
@@ -8,7 +10,7 @@ class WeatherMainModel {
   final num? seaLevel;
   final num? grndLevel;
 
-  WeatherMainModel({
+  const WeatherMainModel({
     required this.temp,
     required this.feelsLike,
     required this.tempMin,
@@ -31,4 +33,15 @@ class WeatherMainModel {
       grndLevel: json['grnd_level'],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        temp,
+        feelsLike,
+        tempMin,
+        tempMax,
+        pressure,
+        humidity,
+        seaLevel,
+        grndLevel,];
 }

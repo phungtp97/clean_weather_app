@@ -1,8 +1,10 @@
-class CoordinateModel {
+import 'package:equatable/equatable.dart';
+
+class CoordinateModel extends Equatable{
   final double lon;
   final double lat;
 
-  CoordinateModel({required this.lon, required this.lat});
+  const CoordinateModel({required this.lon, required this.lat});
 
   factory CoordinateModel.fromJson(Map<String, dynamic> json) {
     return CoordinateModel(
@@ -10,4 +12,7 @@ class CoordinateModel {
       lat: json['lat'],
     );
   }
+
+  @override
+  List<Object?> get props => [lon, lat];
 }
