@@ -1,0 +1,19 @@
+{
+    "placemark": {
+        "name": "Osaka",
+        "isoCountryCode": "JP",
+        "country": "Japan",
+        "postalCode": "12345",
+        "administrativeArea": "Osaka",
+        "locality": "Osaka",
+        "thoroughfare": "Osaka",
+        "subThoroughfare": "Osaka",
+        "subLocality": "Osaka",
+        "subAdministrativeArea": "Osaka"
+    },
+    "location": {
+        "latitude": 34.6937,
+        "longitude": 135.5023,
+        "timestamp": 1721007820
+    }
+}

@@ -15,20 +15,29 @@ import '../../helper/mocks_helper/mocks.mocks.dart';
 void main() {
   const lat = -6.21462;
   const lng = 106.84513;
-  final fakeDio = MockDio();
-  late WeatherRemoteDataSourceIml weatherRemoteDataSourceIml =
-      WeatherRemoteDataSourceIml(urlBuilder: urlBuilder, userDio: fakeDio);
-  final weatherModel = CurrentWeatherModel.fromJson(json.decode(readJson('helper/fake_data/fake_current_weather.json')));
-  final forecastModel = ForecastWeather3HourModel.fromJson(json.decode(readJson('helper/fake_data/fake_forecast.json')));
+  late Dio fakeDio;
+  late WeatherRemoteDataSourceIml weatherRemoteDataSourceIml;
+  setUp(() {
+    fakeDio = MockDio();
+    weatherRemoteDataSourceIml =
+        WeatherRemoteDataSourceIml(urlBuilder: urlBuilder, userDio: fakeDio);
+  });
+
+  final weatherModel = CurrentWeatherModel.fromJson(
+      json.decode(readJson('helper/fake_data/fake_current_weather.json')));
+  final forecastModel = ForecastWeather3HourModel.fromJson(
+      json.decode(readJson('helper/fake_data/fake_forecast.json')));
   test(
       'should return a WeatherEntity when the call to remote data source is successful',
       () async {
     final uri = urlBuilder.getWeatherUrl(lat, lng);
     when(fakeDio.get(uri.toString())).thenAnswer((_) async => Response(
         requestOptions: RequestOptions(path: uri.path),
-        data: json.decode(readJson('helper/fake_data/fake_current_weather.json'))));
+        data: json
+            .decode(readJson('helper/fake_data/fake_current_weather.json'))));
     final result = await weatherRemoteDataSourceIml.getCurrentWeather(lat, lng);
     expect(result, equals(Right<Failure, CurrentWeatherModel>(weatherModel)));
+    result.fold((l) => fail(l.toString()), (r) => expect(r, weatherModel));
   });
 
   test(
@@ -38,7 +47,8 @@ void main() {
     when(fakeDio.get(uri.toString())).thenAnswer((_) async => Response(
         requestOptions: RequestOptions(path: uri.path),
         data: json.decode(readJson('helper/fake_data/fake_forecast.json'))));
-    final result = await weatherRemoteDataSourceIml.getForecastWeather(lat, lng);
-    expect(result, Right<Failure, ForecastWeather3HourModel>(forecastModel));
+    final result =
+        await weatherRemoteDataSourceIml.getForecastWeather(lat, lng);
+    result.fold((l) => fail(l.toString()), (r) => expect(r, forecastModel));
   });
 }

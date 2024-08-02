@@ -1,0 +1,24 @@
+{
+  "placeMarks": [
+    {
+      "placemark": {
+        "name": "MyLocation",
+        "street": "MyStreet",
+        "isoCountryCode": "US",
+        "country": "United States",
+        "postalCode": "12345",
+        "administrativeArea": "MyState",
+        "subAdministrativeArea": "MySubState",
+        "locality": "MyCity",
+        "subLocality": "MySubCity",
+        "thoroughfare": "MyThoroughfare",
+        "subThoroughfare": "MySubThoroughfare"
+      },
+      "location": {
+        "latitude": 37.7749,
+        "longitude": -122.4194,
+        "timestamp": 1721007820
+      }
+    }
+  ]
+}

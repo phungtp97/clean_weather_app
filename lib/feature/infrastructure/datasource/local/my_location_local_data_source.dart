@@ -56,6 +56,7 @@ class MyLocationLocalDataSourceImpl implements MyLocationLocalDataSource {
       try {
         final placeMarkers =
             jsonMap[SharedPreferencesKey.placeMarksKey] as List;
+        print('jsonMap $jsonMap');
         return Right(
             placeMarkers.map((e) => MyLocationEntity.fromMap(e)).toList());
       } catch (e) {

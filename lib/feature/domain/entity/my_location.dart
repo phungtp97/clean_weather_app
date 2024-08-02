@@ -25,5 +25,5 @@ class MyLocationEntity extends Equatable {
   }
 
   @override
-  List<Object?> get props => [location.toJson(), placemark.toJson()];
+  List<Object?> get props => [location, placemark];
 }

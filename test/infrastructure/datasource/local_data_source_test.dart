@@ -1,65 +1,67 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:josh_weather/feature/domain/domain.dart';
-import 'package:josh_weather/feature/infrastructure/datasource/data_source.dart';
-import 'package:mockito/annotations.dart';
+import 'package:josh_weather/feature/infrastructure/infrastructure.dart';
+import 'package:josh_weather/shared/shared.dart';
 import 'package:mockito/mockito.dart';
 
-import 'local_data_source_test.mocks.dart';
-
-@GenerateNiceMocks([MockSpec<MyLocationLocalDataSourceImpl>()])
+import '../../helper/json_reader.dart';
+import '../../helper/mocks_helper/mocks.mocks.dart';
 
 void main() {
-  late MockMyLocationLocalDataSourceImpl mockMyLocationLocalDataSourceImpl;
-
-  final locations = [MyLocationEntity(
-    placemark: const Placemark(
-      name: 'Jakarta',
-      street: 'Jalan Sudirman',
-      subLocality: 'Jakarta Selatan',
-      locality: 'Jakarta',
-      administrativeArea: 'DKI Jakarta',
-      postalCode: '12345',
-      country: 'Indonesia',
-      isoCountryCode: 'ID',
-    ),
-    location: Location(
-      timestamp: DateTime.now(),
-      latitude: -6.2146,
-      longitude: 106.8451,
-    ),
-  )];
+  MockSharedPreferences sharedPreferences = MockSharedPreferences();
+  late MyLocationLocalDataSourceImpl myLocationLocalDataSource;
 
   setUp(() {
-    mockMyLocationLocalDataSourceImpl = MockMyLocationLocalDataSourceImpl();
+    myLocationLocalDataSource =
+        MyLocationLocalDataSourceImpl(sharedPreferences: sharedPreferences);
+  });
+  final myLocations = (json.decode(readJson('helper/fake_data/fake_my_locations.json'))[SharedPreferencesKey.placeMarksKey] as List<dynamic>).map((e) => MyLocationEntity.fromMap(e)).toList();
+  test(
+      'should return a list of MyLocationEntity when the call to local data source is successful',
+      () async {
+    // arrange
+    when(sharedPreferences.getString(SharedPreferencesKey.placeMarksKey))
+        .thenAnswer((_) => readJson('helper/fake_data/fake_my_locations.json'));
+    // act
+    final result = myLocationLocalDataSource.getLocation();
+    // assert
+    result.fold((l) => fail(l.toString()), (r) => expect(r, myLocations));
   });
 
-  test('should return a list of MyLocationEntity when the call to local data source is successful', () async {
+  test(
+      'should return empty when remove location',
+      () async {
     // arrange
+    when(sharedPreferences.getString(SharedPreferencesKey.placeMarksKey))
+        .thenAnswer((_) => readJson('helper/fake_data/fake_my_locations.json'));
 
-    when(mockMyLocationLocalDataSourceImpl.getLocation()).thenAnswer((_) => Right(locations));
+    when(sharedPreferences.setString(SharedPreferencesKey.placeMarksKey, json.encode({'placeMarks': []})))
+        .thenAnswer((_) => Future.value(true));
+
     // act
-    final result = mockMyLocationLocalDataSourceImpl.getLocation();
+    final result = myLocationLocalDataSource.removeLocation(myLocations.first);
+    final result2 = myLocationLocalDataSource.getLocation();
     // assert
-    expect(result, Right(locations));
+    result2.fold((l) => fail(l.toString()), (r) => expect(r, []));
   });
 
-  test('should return a list of MyLocationEntity when the call to local data source is successful', () async {
+  test(
+      'should return a list of 2 MyLocationEntity when add location successful',
+      () async {
     // arrange
-    when(mockMyLocationLocalDataSourceImpl.addLocation(locations.first)).thenAnswer((_) => Right(Future.value(true)));
-    // act
-    final result = mockMyLocationLocalDataSourceImpl.addLocation(locations.first);
-    // assert
-    expect(result, Right(Future.value(true)));
-  });
+    when(sharedPreferences.getString(SharedPreferencesKey.placeMarksKey))
+        .thenAnswer((_) => readJson('helper/fake_data/fake_my_locations.json'));
 
-  test('should return a list of MyLocationEntity when the call to local data source is successful', () async {
-    // arrange
-    when(mockMyLocationLocalDataSourceImpl.removeLocation(locations.first)).thenAnswer((_) => Right(Future.value(true)));
+    final newLocation = MyLocationEntity.fromMap(json.decode(readJson('helper/fake_data/fake_new_location.json')));
+    final newLocations = myLocations..add(newLocation);
+    when(sharedPreferences.setString(SharedPreferencesKey.placeMarksKey, json.encode({'placeMarks': myLocations..addAll(newLocations.toList())})))
+        .thenAnswer((_) => Future.value(true));
     // act
-    final result = mockMyLocationLocalDataSourceImpl.removeLocation(locations.first);
+    final result = myLocationLocalDataSource.getLocation();
     // assert
-    expect(result, Right(Future.value(true)));
+    result.fold((l) => fail(l.toString()), (r) => expect(r.length, 2));
   });
 }
