@@ -1,0 +1,19 @@
+[
+  {
+    "placemark": {
+      "name": "Jakarta",
+      "street": "Jalan Sudirman",
+      "subLocality": "Jakarta Selatan",
+      "locality": "Jakarta",
+      "administrativeArea": "DKI Jakarta",
+      "postalCode": "12345",
+      "country": "Indonesia",
+      "isoCountryCode": "ID"
+    },
+    "location": {
+      "timestamp": "2021-07-01T00:00:00Z",
+      "latitude": -6.2146,
+      "longitude": 106.8451
+    }
+  }
+]
