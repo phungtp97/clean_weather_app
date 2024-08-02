@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:josh_weather/feature/infrastructure/infrastructure.dart';
 
-class ForecastWeather3HourModel {
+class ForecastWeather3HourModel extends Equatable{
   final String cod;
   final int cnt;
   final List<CurrentWeatherModel> list;
 
-  ForecastWeather3HourModel({
+  const ForecastWeather3HourModel({
     required this.cod,
     required this.cnt,
     required this.list,
@@ -20,4 +21,7 @@ class ForecastWeather3HourModel {
           .toList(),
     );
   }
+
+  @override
+  List<Object?> get props => [cod, cnt, list];
 }

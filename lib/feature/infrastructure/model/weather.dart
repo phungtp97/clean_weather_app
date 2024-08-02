@@ -1,4 +1,6 @@
-class WeatherModel {
+import 'package:equatable/equatable.dart';
+
+class WeatherModel extends Equatable {
   final int id;
   final String description;
   final String main;
@@ -13,4 +15,7 @@ class WeatherModel {
       icon: json['icon'],
     );
   }
+
+  @override
+  List<Object?> get props => [id, description, main, icon];
 }

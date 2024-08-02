@@ -1,9 +1,11 @@
-class WindModel {
+import 'package:equatable/equatable.dart';
+
+class WindModel extends Equatable {
   final num speed;
   final num deg;
   final num? gust;
 
-  WindModel({required this.speed, required this.deg, this.gust});
+  const WindModel({required this.speed, required this.deg, this.gust});
 
   factory WindModel.fromJson(Map<String, dynamic> json) {
     return WindModel(
@@ -12,4 +14,7 @@ class WindModel {
       gust: json['gust'],
     );
   }
+
+  @override
+  List<Object?> get props => [speed, deg, gust];
 }

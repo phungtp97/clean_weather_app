@@ -5,7 +5,7 @@ class MyLocationEntity extends Equatable {
   final Location location;
   final Placemark placemark;
 
-  MyLocationEntity({
+  const MyLocationEntity({
     required this.location,
     required this.placemark,
   });
@@ -25,5 +25,5 @@ class MyLocationEntity extends Equatable {
   }
 
   @override
-  List<Object?> get props => [location, placemark];
+  List<Object?> get props => [location.toJson(), placemark.toJson()];
 }

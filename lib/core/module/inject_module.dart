@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:josh_weather/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../shared/extension/extension.dart';
+import '../core.dart';
 
 @module
 abstract class InjectableModule {
@@ -27,11 +27,13 @@ abstract class InjectableModule {
   @Named(apiKeyStr)
   String get apiKey => dotenv.env[apiKeyStr]!;
 
+  @Named(urlBuilderStr)
+  UrlBuilder get urlBuilder => UrlBuilder(apiKey, baseUrl);
   @singleton
   EventBus get eventBus => EventBus();
   @preResolve
   @singleton
-  @Named(authenticatedApiStr)
+  @Named(mainDioStr)
   Future<Dio> get authenticatedDio async {
     final dio = Dio();
 
@@ -55,14 +57,6 @@ abstract class InjectableModule {
       //NetworkInspector().addLog();
       return handler.next(e);
     }));
-    return dio;
-  }
-
-  @Named(publicApiStr)
-  @singleton
-  Dio get publicDio {
-    final dio = Dio();
-
     return dio;
   }
 }

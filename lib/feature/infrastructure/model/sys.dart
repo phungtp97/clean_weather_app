@@ -1,11 +1,13 @@
-class SysModel {
+import 'package:equatable/equatable.dart';
+
+class SysModel extends Equatable{
   final int? type;
   final int? id;
   final String? country;
   final int? sunrise;
   final int? sunset;
 
-  SysModel({
+  const SysModel({
     this.type,
     this.id,
     this.country,
@@ -22,4 +24,7 @@ class SysModel {
       sunset: json['sunset'],
     );
   }
+
+  @override
+  List<Object?> get props => [type, id, country, sunrise, sunset];
 }
