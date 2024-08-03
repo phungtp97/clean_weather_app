@@ -11,9 +11,9 @@ import '../../../domain/domain.dart';
 abstract class MyLocationLocalDataSource {
   Either<Failure, List<MyLocationEntity>> getLocation();
 
-  Either<Failure, Future<bool>> removeLocation(MyLocationEntity place);
+  Future<Either<Failure, bool>> removeLocation(MyLocationEntity place);
 
-  Either<Failure, Future<bool>> addLocation(MyLocationEntity place);
+  Future<Either<Failure, bool>> addLocation(MyLocationEntity place);
 }
 
 @Singleton(as: MyLocationLocalDataSource)
@@ -23,22 +23,23 @@ class MyLocationLocalDataSourceImpl implements MyLocationLocalDataSource {
   MyLocationLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
-  Either<Failure, Future<bool>> addLocation(MyLocationEntity place) {
-    final currentPlaceMarks = getLocation();
+  Future<Either<Failure, bool>> addLocation(MyLocationEntity place) async {
     return getLocation().fold((l) {
       return Left(l);
-    }, (r) {
+    }, (r) async {
       final List<MyLocationEntity> newList = List.from(r);
       if (!newList.contains(place)) {
         newList.add(place);
-        return Right(sharedPreferences.setString(
+        await sharedPreferences.setString(
             SharedPreferencesKey.placeMarksKey,
             json.encode({
               SharedPreferencesKey.placeMarksKey:
-                  newList.map<Map<String, dynamic>>((e) => e.toMap()).toList()
-            })));
+              newList.map<Map<String, dynamic>>((e) => e.toMap()).toList()
+            }));
+        var locations = getLocation();
+        return const Right(true);
       } else {
-        return Right(Future.value(true));
+        return const Right(true);
       }
     });
   }
@@ -56,7 +57,6 @@ class MyLocationLocalDataSourceImpl implements MyLocationLocalDataSource {
       try {
         final placeMarkers =
             jsonMap[SharedPreferencesKey.placeMarksKey] as List;
-        print('jsonMap $jsonMap');
         return Right(
             placeMarkers.map((e) => MyLocationEntity.fromMap(e)).toList());
       } catch (e) {
@@ -68,22 +68,22 @@ class MyLocationLocalDataSourceImpl implements MyLocationLocalDataSource {
   }
 
   @override
-  Either<Failure, Future<bool>> removeLocation(MyLocationEntity place) {
+  Future<Either<Failure, bool>> removeLocation(MyLocationEntity place) async {
     final currentPlaceMarks = getLocation();
     return getLocation().fold((l) {
       return Left(l);
-    }, (r) {
+    }, (r) async {
       final List<MyLocationEntity> newList = List.from(r);
       if (newList.contains(place)) {
         newList.remove(place);
-        return Right(sharedPreferences.setString(
+        return Right(await sharedPreferences.setString(
             SharedPreferencesKey.placeMarksKey,
             json.encode({
               SharedPreferencesKey.placeMarksKey:
               newList.map<Map<String, dynamic>>((e) => e.toMap()).toList()
             })));
       } else {
-        return Right(Future.value(true));
+        return const Right(true);
       }
     });
   }

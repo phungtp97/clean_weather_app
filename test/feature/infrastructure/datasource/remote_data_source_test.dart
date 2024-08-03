@@ -8,9 +8,10 @@ import 'package:josh_weather/feature/infrastructure/datasource/remote/weather_re
 import 'package:josh_weather/feature/infrastructure/infrastructure.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../helper/json_reader.dart';
-import '../../helper/mocks_helper/mocks.dart';
-import '../../helper/mocks_helper/mocks.mocks.dart';
+import '../../../helper/fake_data/get_fake_data.dart';
+import '../../../helper/json_reader.dart';
+import '../../../helper/mocks_helper/mocks.dart';
+import '../../../helper/mocks_helper/mocks.mocks.dart';
 
 void main() {
   const lat = -6.21462;
@@ -23,18 +24,15 @@ void main() {
         WeatherRemoteDataSourceIml(urlBuilder: urlBuilder, userDio: fakeDio);
   });
 
-  final weatherModel = CurrentWeatherModel.fromJson(
-      json.decode(readJson('helper/fake_data/fake_current_weather.json')));
-  final forecastModel = ForecastWeather3HourModel.fromJson(
-      json.decode(readJson('helper/fake_data/fake_forecast.json')));
+  final weatherModel = CurrentWeatherModel.fromJson(fakeCurrentWeatherJson);
+  final forecastModel = ForecastWeather3HourModel.fromJson(fakeForecastJson);
   test(
       'should return a WeatherEntity when the call to remote data source is successful',
       () async {
     final uri = urlBuilder.getWeatherUrl(lat, lng);
     when(fakeDio.get(uri.toString())).thenAnswer((_) async => Response(
         requestOptions: RequestOptions(path: uri.path),
-        data: json
-            .decode(readJson('helper/fake_data/fake_current_weather.json'))));
+        data: fakeCurrentWeatherJson));
     final result = await weatherRemoteDataSourceIml.getCurrentWeather(lat, lng);
     expect(result, equals(Right<Failure, CurrentWeatherModel>(weatherModel)));
     result.fold((l) => fail(l.toString()), (r) => expect(r, weatherModel));
@@ -46,9 +44,21 @@ void main() {
     final uri = urlBuilder.getForecastUrl(lat, lng);
     when(fakeDio.get(uri.toString())).thenAnswer((_) async => Response(
         requestOptions: RequestOptions(path: uri.path),
-        data: json.decode(readJson('helper/fake_data/fake_forecast.json'))));
+        data: fakeForecastJson));
     final result =
         await weatherRemoteDataSourceIml.getForecastWeather(lat, lng);
+    result.fold((l) => fail(l.toString()), (r) => expect(r, forecastModel));
+  });
+
+  test(
+      'should return a list of WeatherEntity when the call to remote data source is successful',
+      () async {
+    final uri = urlBuilder.getForecastFiveDaysUrl(lat, lng);
+    when(fakeDio.get(uri.toString())).thenAnswer((_) async => Response(
+        requestOptions: RequestOptions(path: uri.path),
+        data: fakeForecastJson));
+    final result =
+        await weatherRemoteDataSourceIml.getForecastFiveDaysWeather(lat, lng);
     result.fold((l) => fail(l.toString()), (r) => expect(r, forecastModel));
   });
 }

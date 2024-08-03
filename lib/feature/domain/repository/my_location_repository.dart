@@ -5,7 +5,7 @@ import '../domain.dart';
 abstract class MyLocationRepository {
   Future<Either<Failure, List<MyLocationEntity>>> getMyLocation();
 
-  Future<Either<Failure, Future<bool>>> saveMyLocation(MyLocationEntity place);
+  Future<Either<Failure, bool>> saveMyLocation(MyLocationEntity place);
 
-  Future<Either<Failure, Future<bool>>> removeLocation(MyLocationEntity place);
+  Future<Either<Failure, bool>> removeLocation(MyLocationEntity place);
 }

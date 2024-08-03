@@ -101,12 +101,12 @@ extension GetItInjectableX on _i1.GetIt {
       preResolve: true,
     );
     gh.factory<String>(
-      () => injectableModule.apiKey,
-      instanceName: 'API_KEY',
-    );
-    gh.factory<String>(
       () => injectableModule.baseUrl,
       instanceName: 'BASE_URL',
+    );
+    gh.factory<String>(
+      () => injectableModule.apiKey,
+      instanceName: 'API_KEY',
     );
     gh.factory<_i12.UrlBuilder>(
       () => injectableModule.urlBuilder,

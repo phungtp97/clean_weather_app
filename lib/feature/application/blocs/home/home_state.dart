@@ -45,5 +45,5 @@ class HomeState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [weather, dailyForecast, fiveDaysForecast, locations, selectedLocation];
+  List<Object?> get props => [weather, dailyForecast, fiveDaysForecast, locations.hashCode, selectedLocation];
 }

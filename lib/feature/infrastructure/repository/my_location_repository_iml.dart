@@ -12,8 +12,9 @@ class MyLocationRepositoryImpl implements MyLocationRepository {
   MyLocationRepositoryImpl(this.myLocationDataSource);
 
   @override
-  Future<Either<Failure, Future<bool>>> saveMyLocation(MyLocationEntity place) async {
-    return myLocationDataSource.addLocation(place).fold((l) {
+  Future<Either<Failure, bool>> saveMyLocation(MyLocationEntity place) async {
+    final either = await myLocationDataSource.addLocation(place);
+    return either.fold((l) {
       return Left(l);
     }, (r) {
       return Right(r);
@@ -30,8 +31,9 @@ class MyLocationRepositoryImpl implements MyLocationRepository {
   }
 
   @override
-  Future<Either<Failure, Future<bool>>> removeLocation(MyLocationEntity place) async {
-    return myLocationDataSource.removeLocation(place).fold((l) {
+  Future<Either<Failure, bool>> removeLocation(MyLocationEntity place) async {
+    final either = await myLocationDataSource.removeLocation(place);
+    return either.fold((l) {
       return Left(l);
     }, (r) {
       return Right(r);

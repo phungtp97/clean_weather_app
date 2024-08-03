@@ -41,15 +41,18 @@ class HomeBloc extends BaseBloc<HomeState> {
       stream.map((state) => state.locations);
 
   void init({bool selectFirst = true}) {
-    getLocationUseCase.execute(NoParams()).then((either) {
-      either.fold((l) {
-        command = ErrorDialogCommand(l.errorMessage);
-      }, (r) {
-        emit(state.copyWith(locations: List.from(r)));
-        if (r.isNotEmpty && selectFirst) {
-          selectPlace(r.first);
-        }
-      });
+    getMyLocations(selectFirst: selectFirst);
+  }
+
+  void getMyLocations({bool selectFirst = true}) async {
+    final either = await getLocationUseCase.execute(NoParams());
+    either.fold((l) {
+      command = ErrorDialogCommand(l.errorMessage);
+    }, (r) {
+      emit(state.copyWith(locations: List.from(r)));
+      if (r.isNotEmpty && selectFirst) {
+        selectPlace(r.first);
+      }
     });
   }
 

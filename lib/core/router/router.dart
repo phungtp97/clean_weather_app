@@ -12,7 +12,7 @@ class Routes {
 
   static const String addLocation = '/add_location';
 
-  static getRoute(RouteSettings settings) {
+  static PageRoute getRoute(RouteSettings settings) {
     Widget widget;
     Uri uri = Uri.parse(settings.name!);
     String path = uri.path;
@@ -23,23 +23,8 @@ class Routes {
         widget = GetIt.I.get<Widget>(instanceName: settings.name);
       }
     } catch (e, stackTrace) {
-      //Sentry
-      widget = Scaffold(
-        appBar: AppBar(),
-        body: Center(
-          child: Builder(
-            builder: (context) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                child: Text(
-                  '${settings.name} not found',
-                  textAlign: TextAlign.center,
-                ),
-              );
-            },
-          ),
-        ),
-      );
+      //TODO: Log error to Sentry
+      widget = const NotFoundPage();
     }
 
     if (settings.arguments is RouteArguments &&
@@ -55,7 +40,32 @@ class Routes {
 
     return CupertinoPageRoute(
       builder: (_) => widget,
+      title: widget.runtimeType.toString(),
       settings: settings,
+    );
+  }
+}
+
+class NotFoundPage extends StatelessWidget {
+  const NotFoundPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Builder(
+          builder: (context) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
+              child: Text(
+                'Page not found',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

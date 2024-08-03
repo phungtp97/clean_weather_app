@@ -5,13 +5,13 @@ import '../../../../core/core.dart';
 import '../../../domain/domain.dart';
 
 @injectable
-class SaveLocationUseCase extends UseCase<Future<bool>, MyLocationEntity> {
+class SaveLocationUseCase extends UseCase<bool, MyLocationEntity> {
   final MyLocationRepository _locationRepository;
 
   SaveLocationUseCase(this._locationRepository);
 
   @override
-  Future<Either<Failure, Future<bool>>> execute(MyLocationEntity params) {
+  Future<Either<Failure, bool>> execute(MyLocationEntity params) {
     return _locationRepository.saveMyLocation(params);
   }
 }
