@@ -19,7 +19,6 @@ dependencies:
 
   # Networking
   dio:
-  dio_log:
   dio_cache_interceptor:
 
   # Notification

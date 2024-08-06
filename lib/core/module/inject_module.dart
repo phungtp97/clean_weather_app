@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio_log/interceptor/dio_log_interceptor.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
@@ -15,7 +14,10 @@ abstract class InjectableModule {
 
   @preResolve
   @singleton
-  Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+  Future<SharedPreferences> get prefs => SharedPreferences.getInstance().then((value) {
+    _prefs = value;
+    return value;
+  });
 
   @singleton
   InternetConnection get internetConnectionChecker =>
@@ -37,14 +39,12 @@ abstract class InjectableModule {
   Future<Dio> get authenticatedDio async {
     final dio = Dio();
 
-    dio.interceptors.add(DioLogInterceptor());
     dio.interceptors.add(InterceptorsWrapper(
         onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
           if (options.method == 'POST') {
             options.headers['Content-Type'] = 'application/json';
           }
-          if (_prefs!.token != null &&
-              !options.headers.containsKey('Authorization')) {
+          if (_prefs!.token != null && !options.headers.containsKey('Authorization')) {
             options.headers['Authorization'] =
             'Bearer ${_prefs!.token}';
           }

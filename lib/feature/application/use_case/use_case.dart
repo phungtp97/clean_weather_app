@@ -1,4 +1,3 @@
-export 'user/user_use_case.dart';
 export 'locale/locale_usecase.dart';
 export 'weather/get_weather_by_coord.dart';
 export 'weather/get_weather_forecast_by_coord.dart';

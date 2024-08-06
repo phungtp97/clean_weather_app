@@ -4,21 +4,17 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/core.dart';
 import '../../../../shared/shared.dart';
 import '../../../application/application.dart';
-import 'app.dart';
 
 @singleton
 class AppBloc extends BaseBloc<AppState> {
   final SetLocale _setLocaleUseCase;
   final GetLocale _getLocaleUseCase;
-  final GetMe _getMeUseCase;
 
   AppBloc(
       {required SetLocale setLocaleUseCase,
-      required GetLocale getLocaleUseCase,
-      required GetMe getMeUseCase})
+      required GetLocale getLocaleUseCase})
       : _setLocaleUseCase = setLocaleUseCase,
         _getLocaleUseCase = getLocaleUseCase,
-        _getMeUseCase = getMeUseCase,
         super(AppState());
 
   @disposeMethod
