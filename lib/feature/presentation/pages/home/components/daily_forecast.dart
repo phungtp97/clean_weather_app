@@ -6,7 +6,8 @@ import '../../../../domain/domain.dart';
 class DailyForecastWidget extends StatelessWidget {
   final List<WeatherEntity> weathers;
 
-  const DailyForecastWidget({super.key, required this.weathers});
+  final int? timezone;
+  const DailyForecastWidget({super.key, required this.weathers, this.timezone});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +16,10 @@ class DailyForecastWidget extends StatelessWidget {
       padding: const EdgeInsets.all(4),
       child: Row(
         children: weathers.take(5).map((e) {
-          final date = DateTime.fromMillisecondsSinceEpoch(e.dt * 1000);
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              CommonUtil.getFormattedHour(date)
+              CommonUtil.getFormattedHourSec(e.dt, timezoneOffset: timezone)
                   .text(style: context.textTheme.bodyMedium),
               Image.network(
                 'https://openweathermap.org/img/wn/${e.icon}.png',

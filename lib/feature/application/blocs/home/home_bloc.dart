@@ -90,8 +90,8 @@ class HomeBloc extends BaseBloc<HomeState> {
     for (var weather in weathers) {
       if (dayList.isEmpty ||
           dayList.indexWhere((element) =>
-                  CommonUtil.getDaysFromSeconds(element.dt) ==
-                  CommonUtil.getDaysFromSeconds(weather.dt)) ==
+                  CommonUtil.getDaysFromSec(element.dt, timezoneOffset: element.timezone) ==
+                  CommonUtil.getDaysFromSec(weather.dt, timezoneOffset: weather.timezone)) ==
               -1) {
         dayList.add(weather);
       }

@@ -126,7 +126,8 @@ class _HomePageState extends BaseState<HomePage, HomeBloc> {
                             return ValueListenableBuilder(
                                 valueListenable: slideDelta,
                                 builder: (context, slideDelta, _) {
-                                  //if(!snapshot.hasData) return const SizedBox();
+                                  if (!snapshot.hasData)
+                                    return const SizedBox();
                                   return SizedBox(
                                     height: Dimens.home(context)
                                             .hourlyForecastHeight *
@@ -153,11 +154,14 @@ class _HomePageState extends BaseState<HomePage, HomeBloc> {
                                             StreamBuilder<List<WeatherEntity>?>(
                                                 stream:
                                                     bloc.dailyForecastStream,
-                                                builder: (context, snapshot) {
+                                                builder: (context, dailySn) {
                                                   return snapshot.data != null
                                                       ? DailyForecastWidget(
                                                           weathers:
-                                                              snapshot.data!)
+                                                              dailySn.data!,
+                                                          timezone: snapshot
+                                                              .data?.timezone,
+                                                        )
                                                       : const SizedBox.shrink();
                                                 }),
                                           ],

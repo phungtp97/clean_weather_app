@@ -15,7 +15,7 @@ class ForecastItemWidget extends StatelessWidget {
       child: Row(
         children: [
           CommonUtil.getDayInWeekSec(
-              weather.dt)
+              weather.dt, timezoneOffset: weather.timezone)
               .text(
               style: context.textTheme
                   .bodySmall),

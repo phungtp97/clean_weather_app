@@ -70,7 +70,7 @@ class _MainWeatherWidgetState extends State<MainWeatherWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                (widget.weather.name ?? '')
+                                '${(widget.weather.name ?? '')}, ${widget.weather.sys?.country ?? ''}'
                                     .text(
                                         style: context.textTheme.bodyLarge
                                             ?.copyWith(color: Palette.primary))
@@ -234,7 +234,15 @@ class _MainWeatherWidgetState extends State<MainWeatherWidget> {
                 ),
               ),
             ),
-          )
+          ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: CommonUtil.getFormattedDayHourSec(
+                  (DateTime.now().millisecondsSinceEpoch / 1000).round(),
+                  timezoneOffset: widget.weather.timezone)
+                  .text(style: context.textTheme.bodyMedium).margin(0, 10, 0),
+            )
         ],
       );
     }).expand();

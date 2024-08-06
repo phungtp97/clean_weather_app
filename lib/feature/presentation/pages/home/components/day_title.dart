@@ -21,9 +21,8 @@ class DayTitleWidget extends StatelessWidget {
           horizontal:
           16,
           vertical: 4),
-      child: '${CommonUtil.getDayInWeekSec(weather.dt)} | ${CommonUtil
-          .getFormattedMonthDay(
-          DateTime.fromMillisecondsSinceEpoch(weather.dt))}'.text(
+      child: '${CommonUtil.getDayInWeekSec(weather.dt, timezoneOffset: weather.timezone)} | ${CommonUtil
+          .getFormattedMonthDaySec(weather.dt, timezoneOffset: weather.timezone)}'.text(
           style: context
               .textTheme
               .labelSmall

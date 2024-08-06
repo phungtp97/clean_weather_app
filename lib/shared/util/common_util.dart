@@ -3,24 +3,23 @@ import 'package:intl/intl.dart';
 class CommonUtil {
   CommonUtil._();
 
-  static String getFormattedDate(DateTime date) {
-    return DateFormat('dd/MM/yyyy').format(date);
+  static String getFormattedMonthDaySec(int sec, {int? timezoneOffset}) {
+    return DateFormat('MMM d').format(getTimezoneAwareDtFromSec(sec, timezoneOffset: timezoneOffset));
   }
 
-  static String getFormattedMonthDay(DateTime date) {
-    return DateFormat('MMM d').format(date);
+  static String getDayInWeekSec(int sec, {int? timezoneOffset}) {
+    return DateFormat('EEE').format(getTimezoneAwareDtFromSec(sec, timezoneOffset: timezoneOffset));
   }
 
-  static String getDayInWeekSec(int sec) {
-    return DateFormat('EEE').format(DateTime.fromMillisecondsSinceEpoch(sec * 1000));
+  static String getFormattedHourSec(int sec, {int? timezoneOffset}) {
+    return DateFormat('HH:mm').format(getTimezoneAwareDtFromSec(sec, timezoneOffset: timezoneOffset));
   }
 
-  static String getFormattedHour(DateTime date) {
-    return DateFormat('HH:mm').format(date);
+  static String getFormattedDayHourSec(int sec, {int? timezoneOffset}) {
+    return DateFormat('MMM d | HH:mm').format(getTimezoneAwareDtFromSec(sec, timezoneOffset: timezoneOffset));
   }
 
   static String fareinheitToCelcius(double fareinheit) {
-    print('fareinheit: $fareinheit');
     return ((fareinheit - 32) * 5 / 9).toStringAsFixed(1);
   }
 
@@ -28,7 +27,16 @@ class CommonUtil {
     return (kelvin - 273.15).toStringAsFixed(fractionDigits ?? 1);
   }
 
-  static int getDaysFromSeconds(int sec) {
-    return (sec / (60 * 60 * 24)).floor();
+  static int getDaysFromSec(int sec, {int? timezoneOffset}) {
+    return ((sec + (timezoneOffset ?? 0)) / (60 * 60 * 24)).floor();
+  }
+
+  static DateTime getTimezoneAwareDtFromSec(int sec, {int? timezoneOffset}) {
+    if(timezoneOffset == null) return getDtFromSec(sec);
+    return DateTime.fromMillisecondsSinceEpoch(sec * 1000, isUtc: true).add(Duration(seconds: timezoneOffset));
+  }
+
+  static DateTime getDtFromSec(int sec) {
+    return DateTime.fromMillisecondsSinceEpoch(sec * 1000);
   }
 }
